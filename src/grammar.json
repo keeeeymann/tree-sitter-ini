@@ -60,7 +60,7 @@
           "type": "ALIAS",
           "content": {
             "type": "PATTERN",
-            "value": "[^\\[\\]]+"
+            "value": "(([^\\s\\[\\]\\\\])|(\\\\[^\\r\\n]))+(([ \\t])+(([^\\s\\[\\]\\\\])|(\\\\[^\\r\\n]))+)*"
           },
           "named": true,
           "value": "text"
@@ -106,14 +106,19 @@
     },
     "setting_name": {
       "type": "PATTERN",
-      "value": "[^;#=\\s\\[]+( *[^;#=\\s\\[])*"
+      "value": "(([^\\s\\[\\]\\\\;#=])|(\\\\[^\\r\\n]))+(([ \\t])+(([^\\s\\[\\]\\\\;#=])|(\\\\[^\\r\\n]))+)*"
     },
     "setting_value": {
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "setting_text"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "setting_text"
+          },
+          "named": true,
+          "value": "text"
         },
         {
           "type": "SEQ",
@@ -122,8 +127,13 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "setting_text"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "setting_text"
+                  },
+                  "named": true,
+                  "value": "text"
                 },
                 {
                   "type": "BLANK"
@@ -145,15 +155,20 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "_line_cont"
+          "type": "PATTERN",
+          "value": "\\\\\\r?\\n"
         },
         {
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "setting_text"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "setting_text_cont"
+              },
+              "named": true,
+              "value": "text"
             },
             {
               "type": "BLANK"
@@ -163,42 +178,12 @@
       ]
     },
     "setting_text": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "PATTERN",
-            "value": "[^\\r\\n]"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_esc_bkslsh"
-          }
-        ]
-      }
+      "type": "PATTERN",
+      "value": "(([^\\r\\n\\\\])|(\\\\[^\\r\\n]))+"
     },
-    "_line_cont": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 0,
-        "content": {
-          "type": "PATTERN",
-          "value": "\\\\\\r?\\n"
-        }
-      }
-    },
-    "_esc_bkslsh": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 1,
-        "content": {
-          "type": "STRING",
-          "value": "\\\\"
-        }
-      }
+    "setting_text_cont": {
+      "type": "PATTERN",
+      "value": "[ \\t]*(([^\\s\\\\;#])|(\\\\[^\\r\\n]))(([^\\r\\n\\\\])|(\\\\[^\\r\\n]))*"
     },
     "comment": {
       "type": "SEQ",

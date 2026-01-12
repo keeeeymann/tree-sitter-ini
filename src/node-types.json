@@ -89,11 +89,6 @@
     }
   },
   {
-    "type": "setting_text",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "setting_value",
     "named": true,
     "fields": {},
@@ -102,11 +97,11 @@
       "required": true,
       "types": [
         {
-          "type": "setting_text",
+          "type": "setting_value_cont",
           "named": true
         },
         {
-          "type": "setting_value_cont",
+          "type": "text",
           "named": true
         }
       ]
@@ -121,7 +116,7 @@
       "required": false,
       "types": [
         {
-          "type": "setting_text",
+          "type": "text",
           "named": true
         }
       ]
@@ -148,10 +143,6 @@
   },
   {
     "type": "[",
-    "named": false
-  },
-  {
-    "type": "\\\\",
     "named": false
   },
   {
